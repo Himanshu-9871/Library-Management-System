@@ -2,3 +2,5 @@
 102,Operating System,Albert Silberschetaz,Study,1
 103,OOPS CONCEPTS,Himanshu,Study,0
 104,The Alchemist,Paulo coelho,Novel,1
+1003,Sachin Tendulkar,Sachin,biopic,1
+1005,Sachin tendulkar,sachin,biopic,1

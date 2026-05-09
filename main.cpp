@@ -5,21 +5,39 @@
 #include "header/Library.hpp"
 #include "header/User.hpp"
 
+#include "Database/include/FileStorage.hpp"
+#include "Database/include/MySqlStorage.hpp"
+
 using namespace std;
 
 
 int main()
 {
-    FileManager files;
-    Library lib;
+     int storageChoice;
+    cout << "Choose Storage:\n";
+    cout << "1. File Storage\n";
+    cout << "2. MySQL Storage\n";
+    cout << "Enter choice: ";
+    cin >> storageChoice;
+    HelperDb* storage;
+
+    if (storageChoice == 1)
+        storage = new FileStorage();
+    else
+        storage = new MySQLStorage();
+
+    Library lib(storage);
+    storage->loadBooks(lib.getBooks());
+    storage->loadUsers(lib.getUser());
+    storage->loadActivities(lib.getActivities());
     //step 1 is to load the files 
 
-    files.LoadBooks(lib.getBooks());
-    files.LoadUsers(lib.getUser());
-    files.LoadActivities(lib.getActivities());
+    // files.LoadBooks(lib.getBooks());
+    // files.LoadUsers(lib.getUser());
+    // files.LoadActivities(lib.getActivities());
 
     int choice = 0;
-    while(choice != 10)
+     while(choice != 10)
     {
         cout <<"\n=====Library Management System=====\n";
         cout << "1. Add a Book\n";
@@ -34,94 +52,91 @@ int main()
         cout << "10. Exit\n";
         cout << "Enter choice: ";
         cin>>choice;
+
         switch(choice)
         {
             case 1:
-            {
                 lib.AddBook();
-                files.saveBooks(lib.getBooks());
+                storage->saveBooks(lib.getBooks());
                 break;
-            } 
+
             case 2:
-            {
                 lib.AddUser();
-                files.saveUsers(lib.getUser());
+                storage->saveUsers(lib.getUser());
                 break;
-            }
+
             case 3:
-            {
                 lib.UpdateBookDetails();
-                files.saveBooks(lib.getBooks());
+                storage->saveBooks(lib.getBooks());
                 break;
-            }
+
             case 4:
-            {
                 lib.DeleteBook();
-                files.saveBooks(lib.getBooks());
+                storage->saveBooks(lib.getBooks());
                 break;
-            }
+
             case 5:
             {
                 bool status = lib.checkAvailability();
-                if(status)
-                {
-                    cout << "Book Is present in the library :-) !!";
-                    cout << endl;
-                }
-                else{
-                    cout << "Sorry User Book is Not present :-("<<endl;
-                }
+                cout << (status ? "Book is available\n" : "Book not found\n");
                 break;
             }
+
             case 6:
-            {
                 lib.searchByTitle();
                 break;
-            }
+
             case 7:
-            {
                 lib.searchByCategory();
                 break;
-            }
+
             case 8:
             {
-                int bookid;
-                int userid;
-                cout << "Enter id of Book You want to issue: ";
-                cin>>bookid;
+                int bookid, userid;
 
-                cout << "Enter the id of User : ";
-                cin>> userid;
-                lib.IssueBook(bookid,userid);
-                files.saveBooks(lib.getBooks());
-                files.saveUsers(lib.getUser());
-                files.saveActivities(lib.getActivities());
+                cout << "Enter Book ID: ";
+                cin >> bookid;
+
+                cout << "Enter User ID: ";
+                cin >> userid;
+
+                lib.IssueBook(bookid, userid);
+
+                storage->saveBooks(lib.getBooks());
+                storage->saveUsers(lib.getUser());
+                storage->saveActivities(lib.getActivities());
                 break;
             }
+
             case 9:
             {
-                int bookid;
-                int userid;
-                cout << "Enter id of Book You want to Return : ";
-                cin>>bookid;
+                int bookid, userid;
 
-                cout << "Enter the id of User : ";
-                cin>> userid;
-                lib.returnBook(bookid,userid);
-                files.saveBooks(lib.getBooks());
-                files.saveUsers(lib.getUser());
-                files.saveActivities(lib.getActivities());
+                cout << "Enter Book ID: ";
+                cin >> bookid;
+
+                cout << "Enter User ID: ";
+                cin >> userid;
+
+                lib.returnBook(bookid, userid);
+
+                storage->saveBooks(lib.getBooks());
+                storage->saveUsers(lib.getUser());
+                storage->saveActivities(lib.getActivities());
                 break;
-
             }
+
             case 10:
-            {
-                cout << "Exiting from the library...!!"<<endl;
+                cout << "Exiting...\n";
                 break;
-            }
-            default : cout << "Enter a Valid Choice..!!"<<endl;
+
+            default:
+                cout << "Invalid choice\n";
         }
     }
+
+    delete storage;  // 🔥 cleanup
     return 0;
+
 }
 

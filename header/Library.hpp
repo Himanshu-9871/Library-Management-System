@@ -7,8 +7,10 @@
 #include "Book.hpp"
 #include "User.hpp"
 #include "Activity.hpp"
-
+#include "../Database/include/HelperDb.hpp"
+#include <string>
 using namespace std;
+//Hello user name
 
 class Library
 {
@@ -16,7 +18,11 @@ class Library
     vector<Book>Books;
     vector<User>Users;
     vector<Activity>Activities;
+    HelperDb *storage;
     public:
+    Library(HelperDb* store);
+    Library();
+
     void AddBook();
     void UpdateBookDetails();
     void DeleteBook();

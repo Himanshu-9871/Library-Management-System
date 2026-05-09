@@ -1,5 +1,12 @@
 #include "../header/Library.hpp"
 
+Library::Library(HelperDb* store)
+{
+    this->storage = store;
+}
+
+Library :: Library(){}
+
 void Library :: AddBook()
 {
     cout << "Enter the Details of Books : " <<endl;

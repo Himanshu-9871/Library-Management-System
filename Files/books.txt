@@ -1,0 +1,4 @@
+101,Atomic Habits,James Clear,Self Help,0
+102,Operating System,Albert Silberschetaz,Study,1
+103,OOPS CONCEPTS,Himanshu,Study,0
+104,The Alchemist,Paulo coelho,Novel,1
